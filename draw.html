@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+    <style>
+    body,
+    div,
+    dl,
+    dt,
+    dd,
+    ul,
+    ol,
+    em,
+    i,
+    li,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    pre,
+    code,
+    form,
+    fieldset,
+    legend,
+    input,
+    textarea,
+    p,
+    blockquote,
+    th,
+    td {
+        margin: 0;
+        padding: 0;
+        color: #444444;
+        font: 14px/1.5 Microsoft YaHei, Helvitica, Verdana, Arial, san-serif;
+    }
+    ul,
+    ol,
+    li {
+        list-style: none;
+    }
+    a {
+        text-decoration: none
+    }
+    a:hover {
+        text-decoration: underline
+    }
+    i,
+    em {
+        font-style: normal;
+    }
+    img {
+        border: none;
+    }
+    input {
+        background: none;
+        border: none;
+        outline: none;
+    }
+    textarea {
+        outline: none;
+        resize: none;
+    }
+    .clearfix:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+    .clearfix {
+        zoom: 1;
+    }
+    .darw_box {
+        width: 496px;
+        height: 496px;
+        border: #000 solid 1px;
+        margin: 100px auto;
+        position: relative;
+    }
+    .darw_box .spoil1 {
+        position: absolute;
+        left: 0;
+        top: 0
+    }
+    .darw_box .spoil2 {
+        position: absolute;
+        left: 160px;
+        top: 0
+    }
+    .darw_box .spoil3 {
+        position: absolute;
+        left: 320px;
+        top: 0
+    }
+    .darw_box .spoil4 {
+        position: absolute;
+        left: 320px;
+        top: 160px
+    }
+    .darw_box .spoil5 {
+        position: absolute;
+        left: 320px;
+        top: 320px
+    }
+    .darw_box .spoil6 {
+        position: absolute;
+        left: 160px;
+        top: 320px
+    }
+    .darw_box .spoil7 {
+        position: absolute;
+        left: 0;
+        top: 320px
+    }
+    .darw_box .spoil8 {
+        position: absolute;
+        left: 0;
+        top: 160px
+    }
+    .darw_box .spoil9 {
+        position: absolute;
+        left: 480px;
+        top: 320px
+    }
+    .darw_box .spoil10 {
+        position: absolute;
+        left: 540px;
+        top: 320px
+    }
+    .darw_box .spoil11 {
+        position: absolute;
+        left: 0;
+        top: 480px
+    }
+    .darw_box .spoil12 {
+        position: absolute;
+        left: 0;
+        top: 540px
+    }
+    .darw_box div {
+        width: 148px;
+        height: 148px;
+        border: #999 solid 1px;
+        background: #FFC;
+        line-height: 150px;
+        text-align: center;
+        font-size: 18px;
+        margin: 10px;
+    }
+    .darw_box a {
+        display: block;
+        width: 148px;
+        height: 148px;
+        border: #999 solid 1px;
+        background: #C63;
+        color: #000;
+        font-size: 18px;
+        line-height: 150px;
+        text-align: center;
+        position: absolute;
+        left: 160px;
+        top: 160px;
+        margin: 10px;
+    }
+    .darw_box .active {
+        border: #F00 solid 1px;
+        background: red;
+    }
+    .darw_box .active1 {
+        border: #F00 solid 1px;
+        background: #f97272;
+    }
+    .darw_box .active2 {
+        border: #F00 solid 1px;
+        background: #fcadad;
+    }
+    </style>
+
+
+
+
+    <script src="js/jquery-1.7.2.js"></script>
+    <script>
+    $(function() {
+
+
+        var awardsList = $('.darw_box div');
+
+        function cb(n) {
+            var arr = ['亲，今天忌出行哦', '一等奖', '二等奖', '三等奖', '四等奖', '五等奖', '六等奖', '七等奖','八等奖','九等奖','十等奖','十一等奖'];
+            alert(arr[n]);
+        }
+		
+
+        $('#darw_btn').click(function() {
+			var darwDown = true;
+        	console.log(darwDown);
+            var target = $('.darw_box .active');
+
+            draw(11, 6, darwDown, target, awardsList, cb);
+        })
+
+        function draw(n, rounds, darwDown, target, awardsList, fn) { //停止位置，转几圈，奖品element，回调
+
+        
+            if (darwDown) {
+
+                darwDown = false;
+
+                console.log(darwDown);
+                var iTime = 10,
+                    iNow = target.index(),
+                    timerId = null,
+                    number = awardsList.length * rounds - 2;
+
+                (function timer() {
+
+                    timerId = setTimeout(function() {
+
+                        iNow++;
+                        if (iNow < number) {
+                        	console.log(5);
+                            iTime += 5;
+                        } else if (number < iNow && iNow < (number + n - 2)) {
+                            iTime += 10;
+                            console.log(10);
+                        } else {
+                            iTime += 100;
+                            console.log(100);
+                        }
+
+                        if (iNow == number + n + 2) {
+                            clearTimeout(timerId);
+                            fn(n);
+                            darwDown = true;
+                            return;
+                        }
+
+                        awardsList.removeClass('active');
+                        awardsList.eq(iNow % awardsList.length).addClass('active');
+                        timer();
+
+                    }, iTime);
+
+                })();
+
+            }
+        }
+    })
+    </script>
+</head>
+
+<body>
+    <div class="darw_box" id="darw_box">
+        <div class="spoil1">1</div>
+        <div class="spoil2">2</div>
+        <div class="spoil3">3</div>
+        <a href="javascript:;" id="darw_btn">btn</a>
+        <div class="spoil4">4</div>
+
+        <div class="spoil5">5</div>
+        <div class="spoil6">6</div>
+        <div class="spoil7 active">7</div>
+        <div class="spoil8">8</div>
+        <div class="spoil9">9</div>
+        <div class="spoil10">10</div>
+        <div class="spoil11">11</div>
+        <div class="spoil8">0</div>
+    </div>
+</body>
+
+</html>
